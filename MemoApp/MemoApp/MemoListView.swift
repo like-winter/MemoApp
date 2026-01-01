@@ -10,6 +10,7 @@ import Combine
 
 struct MemoListView: View {
     @StateObject var viewModel = MemoViewModel()
+    @State private var isShowingAddView = false
     
     var body: some View {
         NavigationStack {
@@ -19,10 +20,25 @@ struct MemoListView: View {
                         MemoRowView(memo: memo)
                     }
                 }
+                .onDelete { indexSet in
+                    viewModel.delete(at: indexSet)
+                }
             }
             .navigationTitle("Memo")
             .navigationDestination(for: Memo.self) { memo in
                 MemoDetailView(memo: memo)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        isShowingAddView = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $isShowingAddView) {
+                MemoAddView(viewModel: viewModel)
             }
         }
     }

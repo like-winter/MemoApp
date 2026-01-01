@@ -13,7 +13,8 @@ final class MemoViewModel: ObservableObject {
     @Published var memos: [Memo] = []
     
     func add(title: String, content: String) {
-        _ = Memo(title: title, content: content, date: Date())
+        let memo = Memo(title: title, content: content, date: Date())
+        memos.append(memo)
     }
     
     func delete(at offsets: IndexSet) {
