@@ -15,10 +15,15 @@ struct MemoListView: View {
         NavigationStack {
             List {
                 ForEach(viewModel.memos) { memo in
-                    MemoRowView(memo: memo)
+                    NavigationLink(value: memo) {
+                        MemoRowView(memo: memo)
+                    }
                 }
             }
             .navigationTitle("Memo")
+            .navigationDestination(for: Memo.self) { memo in
+                MemoDetailView(memo: memo)
+            }
         }
     }
 }
