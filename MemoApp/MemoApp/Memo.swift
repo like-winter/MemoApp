@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Memo: Identifiable {
+struct Memo: Identifiable, Hashable {
     let id: UUID = UUID()
     var title: String
     var content: String
