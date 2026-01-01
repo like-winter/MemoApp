@@ -12,6 +12,10 @@ import SwiftUI
 final class MemoViewModel: ObservableObject {
     @Published var memos: [Memo] = []
     
+    var sortedMemos: [Memo] {
+        memos.sorted { $0.date > $1.date }
+    }
+    
     func add(title: String, content: String) {
         let memo = Memo(title: title, content: content, date: Date())
         memos.append(memo)

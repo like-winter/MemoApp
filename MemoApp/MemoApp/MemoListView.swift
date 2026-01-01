@@ -15,7 +15,7 @@ struct MemoListView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(viewModel.memos) { memo in
+                ForEach(viewModel.sortedMemos) { memo in
                     NavigationLink(value: memo) {
                         MemoRowView(memo: memo)
                     }
@@ -26,7 +26,7 @@ struct MemoListView: View {
             }
             .navigationTitle("Memo")
             .navigationDestination(for: Memo.self) { memo in
-                MemoDetailView(memo: memo)
+                MemoDetailView(viewModel: viewModel, memo: memo)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
