@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MemoAddView: View {
-    @ObservedObject var viewModel = MemoViewModel()
+    @ObservedObject var viewModel: MemoViewModel
     @Environment(\.dismiss) private var dismiss
     
     @State private var title: String = ""
@@ -31,10 +31,11 @@ struct MemoAddView: View {
             } label: {
                 Text("Add Memo")
             }
+            .buttonStyle(.borderedProminent)
         }
     }
 }
 
 #Preview {
-    MemoAddView()
+    MemoAddView(viewModel: MemoViewModel())
 }
