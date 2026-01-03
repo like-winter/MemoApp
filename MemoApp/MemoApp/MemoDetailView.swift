@@ -15,6 +15,8 @@ struct MemoDetailView: View {
     @State private var title: String
     @State private var content: String
     
+    @FocusState private var isFocused: Bool
+    
     init(viewModel: MemoViewModel, memo: Memo) {
         self.viewModel = viewModel
         self.memo = memo
@@ -24,30 +26,46 @@ struct MemoDetailView: View {
     }
     
     var body: some View {
-        VStack(spacing: 30) {
-            
-            TextField("제목", text: $title)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            TextField("Content", text: $content)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Text(memo.date, style: .date)
+        ScrollView {
+            VStack(spacing: 10) {
                 
-            Button {
-                if viewModel.update(
-                    id: memo.id,
-                    title: title,
-                    content: content)
-                {
-                    dismiss()
+                TextField("제목", text: $title)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.top, 25)
+                    .padding(.horizontal)
+                
+                //            TextField("Content", text: $content)
+                //                .textFieldStyle(RoundedBorderTextFieldStyle())
+                //                .padding()
+                
+                TextEditor(text: $content)
+                    .focused($isFocused)
+                    .frame(maxWidth: .infinity, minHeight: 400, maxHeight: 400, alignment: .topLeading)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.secondary.opacity(0.3))
+                    )
+                    .padding(.top, 25)
+                    .padding(.horizontal)
+                
+                VStack(spacing: 10) {
+                    Text(memo.date, style: .date)
+                    
+                    Button {
+                        if viewModel.update(
+                            id: memo.id,
+                            title: title,
+                            content: content)
+                        {
+                            dismiss()
+                        }
+                    } label: {
+                        Text("update")
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
-            } label: {
-                Text("update")
+                .padding(.top, 20)
             }
-            .buttonStyle(.borderedProminent)
         }
     }
 }
