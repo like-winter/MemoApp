@@ -10,18 +10,29 @@ import Combine
 
 struct MemoListView: View {
     @StateObject var viewModel = MemoViewModel()
-    @State private var isShowingAddView = false
+    @State private var searchText = ""
+    
+    var filteredMemos: [Memo] {
+        if searchText.isEmpty {
+            return viewModel.sortedMemos
+        } else {
+            return viewModel.sortedMemos.filter { memo in
+                memo.title.localizedStandardContains(searchText) || memo.content.localizedStandardContains(searchText)
+            }
+        }
+    }
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(viewModel.sortedMemos) { memo in
+                ForEach(filteredMemos) { memo in
                     NavigationLink(value: memo) {
                         MemoRowView(memo: memo)
                     }
                 }
                 .onDelete { indexSet in
-                    viewModel.delete(at: indexSet)
+                    let memosToDelete = indexSet.map { filteredMemos[$0] }
+                    viewModel.delete(memos: memosToDelete)
                 }
             }
             .navigationTitle("Memo")
@@ -38,6 +49,16 @@ struct MemoListView: View {
             .navigationDestination(for: String.self) { destination in
                 if destination == "addMemo" {
                     MemoAddView(viewModel: viewModel)
+                }
+            }
+            .searchable(
+                text: $searchText,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "제목 또는 내용 검색"
+            )
+            .overlay {
+                if !searchText.isEmpty && filteredMemos.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
                 }
             }
         }

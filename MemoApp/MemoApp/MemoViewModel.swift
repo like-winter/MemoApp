@@ -21,8 +21,10 @@ final class MemoViewModel: ObservableObject {
         memos.append(memo)
     }
     
-    func delete(at offsets: IndexSet) {
-        memos.remove(atOffsets: offsets)
+    func delete(memos: [Memo]) {
+        self.memos.removeAll { memo in
+            memos.contains(where: { $0.id == memo.id })
+        }
     }
     
     func update(id: UUID, title: String, content: String) -> Bool {
