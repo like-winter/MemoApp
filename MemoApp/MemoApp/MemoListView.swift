@@ -30,15 +30,15 @@ struct MemoListView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        isShowingAddView = true
-                    } label: {
+                    NavigationLink(value: "addMemo") {
                         Image(systemName: "plus")
                     }
                 }
             }
-            .sheet(isPresented: $isShowingAddView) {
-                MemoAddView(viewModel: viewModel)
+            .navigationDestination(for: String.self) { destination in
+                if destination == "addMemo" {
+                    MemoAddView(viewModel: viewModel)
+                }
             }
         }
     }
