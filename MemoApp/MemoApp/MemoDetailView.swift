@@ -67,7 +67,7 @@ struct MemoDetailView: View {
                 .padding(.top, 20)
             }
         }
-        .navigationTitle("메모 수정")
+        .navigationTitle("메모 상세화면")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
