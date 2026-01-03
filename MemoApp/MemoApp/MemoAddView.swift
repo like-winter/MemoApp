@@ -47,6 +47,8 @@ struct MemoAddView: View {
                 .padding(.top, 20)
             }
         }
+        .navigationTitle("메모 추가")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
